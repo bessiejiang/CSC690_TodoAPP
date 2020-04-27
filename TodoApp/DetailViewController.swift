@@ -49,6 +49,9 @@ class DetailViewController: UIViewController {
                return
            }
         }
+        print("Starting sending notification message back to ongoing view controller")
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadCompletedTasks"), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loadTasks"), object: nil)
         self.dismiss(animated: true)
     }
     

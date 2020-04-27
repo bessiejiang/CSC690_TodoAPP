@@ -13,16 +13,18 @@ class CompletedTaskOverviewViewController: UIViewController, UITableViewDelegate
     
 
     var ongoingTasks : [Dictionary<String, Any>]!
-        override func viewWillAppear(_ animated: Bool) {
-            loadOngoingTask()
-            tableview.reloadData()
-        }
-    
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            tableview.delegate = self
-            tableview.dataSource = self
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        loadOngoingTask()
+        tableview.reloadData()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableview.delegate = self
+        tableview.dataSource = self
+        NotificationCenter.default.addObserver(self, selector: #selector(loadOngoingTask),
+        name: NSNotification.Name(rawValue: "loadCompletedTasks"), object: nil)
+    }
     
     
     @IBAction func refreshButtonPressed(_ sender: Any) {
@@ -42,7 +44,7 @@ class CompletedTaskOverviewViewController: UIViewController, UITableViewDelegate
     
     
     //MARK: helpers:
-        func loadOngoingTask() {
+    @objc func loadOngoingTask() {
             ongoingTasks = []
             GetTasksInFirestore(complete: true){(documents) in
                 for document in documents {
